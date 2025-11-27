@@ -1,0 +1,47 @@
+{
+  "name": "sistema-backend",
+  "version": "1.0.0",
+  "description": "Sistema de gestión de stock con TypeScript",
+  "type": "commonjs",
+  "scripts": {
+    "dev": "ts-node index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "jest",
+    "db:init": "ts-node scripts/init-db.ts"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.21.2",
+    "mysql2": "^3.6.0",
+    "nodemailer": "^7.0.10",
+    "pdfkit": "^0.14.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.13",
+    "@types/express": "^4.17.17",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^20.19.24",
+    "@types/nodemailer": "^6.4.9",
+    "@types/pdfkit": "^0.12.9",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
+    "@types/uuid": "^9.0.2",
+    "jest": "^30.2.0",
+    "nodemon": "^3.1.10",
+    "ts-jest": "^29.4.5",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
+  },
+  "keywords": [
+    "stock",
+    "inventory",
+    "typescript"
+  ],
+  "author": "Tu equipo",
+  "license": "MIT"
+}
