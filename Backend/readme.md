@@ -9,6 +9,7 @@ Este proyecto implementa el backend de un Sistema de Gestión de Stock, desarrol
 El sistema permite administrar productos, registrar órdenes, manejar movimientos de stock, generar reportes PDF y activar alertas personalizadas.
 
 Incluye:
+
 ```plaintext
 ✅ API REST documentada con Swagger
 ✅ Base de datos
@@ -29,25 +30,26 @@ Incluye:
 
 ### Tecnologías Utilizadas
 
-  - Node.js 18+
+- Node.js 18+
 
-  - TypeScript
+- TypeScript
 
-  - Express
+- Express
 
-  - MySQL
+- MySQL
 
-  - Jest (tests)
+- Jest (tests)
 
-  - Docker & Docker Compose
+- Docker & Docker Compose
 
-  - Swagger (documentación de API)
+- Swagger (documentación de API)
 
-  - PDFKit (vía adaptador)
+- PDFKit (vía adaptador)
 
-  - Patrones de diseño de software
+- Patrones de diseño de software
 
 ### 🗂️ Estructura del Proyecto
+
 ```plaintext
 Backend/
 │   .dockerignore
@@ -118,7 +120,8 @@ Backend/
 ```
 
 ### 🚀 Instalación y Ejecución
-``` ruby
+
+```ruby
 1️⃣ Clonar el repositorio
 git clone https://github.com/PerroneEros/Proyecto-Sistema-de-stock.git
 cd Proyecto-Sistema-de-stock/Backend
@@ -142,7 +145,7 @@ Opción A — Script SQL
 mysql -u root -p < setup.sql
 
 Opción B — Script TypeScript
-npm run init-db
+npm run db:init
 
 5️⃣ Ejecutar el servidor
 Modo producción
@@ -153,6 +156,7 @@ npm run dev
 ```
 
 ### 🐳 Ejecución con Docker
+
 ```ruby
 1. Construir e iniciar
 docker-compose up --build -d
@@ -165,7 +169,7 @@ docker-compose down
 
 Una vez iniciado el proyecto:
 
-*  📌 http://localhost:3000/api-docs 
+- 📌 http://localhost:3000/api-docs
 
 La documentación se genera desde el archivo:
 
@@ -174,6 +178,7 @@ swagger.ts
 ## 📌 Endpoints principales
 
 #### 📦 Productos
+
 ```plaintext
 GET	/products	Listar productos
 GET	/products/:id	Obtener producto
@@ -181,14 +186,17 @@ POST	/products	Crear producto (Factory + Builder)
 PUT	/products/:id	Actualizar producto
 DELETE	/products/:id	Eliminar producto
 ```
+
 🛒 Pedidos
-``` plaintext
+
+```plaintext
 GET	/orders	Listar órdenes
 POST	/orders	Crear orden
 GET	/orders/:id	Ver orden
 ```
 
 📊 Reportes
+
 ```plaintext
 GET	/reports/pdf	Generar reporte PDF (Adapter)
 GET	/reports/alerts	Ver alertas (Observer)
@@ -200,107 +208,107 @@ GET	/reports/alerts	Ver alertas (Observer)
 
 Archivo: src/config/database.ts
 
-   * Garantiza que exista una única instancia de conexión a la base de datos.
-   
-   * Evita reconexiones innecesarias y mejora el rendimiento.
-   
-   * Asegura consistencia en todas las operaciones que requieren acceso al almacenamiento.
-   
-   * Permite un manejo centralizado de errores y reconexión.
+- Garantiza que exista una única instancia de conexión a la base de datos.
+
+- Evita reconexiones innecesarias y mejora el rendimiento.
+
+- Asegura consistencia en todas las operaciones que requieren acceso al almacenamiento.
+
+- Permite un manejo centralizado de errores y reconexión.
 
 ✔️ Factory — Creación de Productos
 
 Archivo: src/patterns/ProductFactory.ts
-   
-   * Permite crear distintos tipos de productos según su categoría o tipo.
-   
-   * Evita lógica repetida en los controladores o servicios.
-   
-   * Facilita la extensibilidad del sistema cuando se agreguen nuevos tipos de productos.
-   
-   * Separa la lógica de creación de la lógica de negocio.
+
+- Permite crear distintos tipos de productos según su categoría o tipo.
+
+- Evita lógica repetida en los controladores o servicios.
+
+- Facilita la extensibilidad del sistema cuando se agreguen nuevos tipos de productos.
+
+- Separa la lógica de creación de la lógica de negocio.
 
 ✔️ Builder — Construcción de Productos Complejos
 
 Archivo: src/patterns/ProductBuilder.ts
-   
-   * Facilita la creación de productos con múltiples atributos opcionales.
-   
-   * Implementa un flujo de construcción más legible y flexible.
-   
-   * Permite transformar un DTO en un objeto de dominio de forma ordenada.
-   
-   * Útil para productos con propiedades variables o configurables.
+
+- Facilita la creación de productos con múltiples atributos opcionales.
+
+- Implementa un flujo de construcción más legible y flexible.
+
+- Permite transformar un DTO en un objeto de dominio de forma ordenada.
+
+- Útil para productos con propiedades variables o configurables.
 
 ✔️ Decorator — Extensión Dinámica de Funcionalidades
 
 Archivo: src/patterns/ProductDecorator.ts
 
-   * Permite añadir funcionalidades sin modificar la clase base del producto.
-   
-   * Útil para aplicar recargos, descuentos, etiquetas o precios finales.
-   
-   * Define comportamientos adicionales de manera flexible y desacoplada.
-   
-   * Facilita la combinación de múltiples decoradores si fuera necesario.
+- Permite añadir funcionalidades sin modificar la clase base del producto.
+
+- Útil para aplicar recargos, descuentos, etiquetas o precios finales.
+
+- Define comportamientos adicionales de manera flexible y desacoplada.
+
+- Facilita la combinación de múltiples decoradores si fuera necesario.
 
 ✔️ Adapter — Exportación de Datos a PDF
 
 Archivo: src/patterns/PDFAdapter.ts
 
-   * Adapta los datos internos de productos y movimientos para ser consumidos por la librería PDFKit.
-   
-   * Permite cambiar la librería de generación de PDFs sin afectar el resto del sistema.
-   
-   * Reduce el acoplamiento entre lógica del sistema y librerías externas.
+- Adapta los datos internos de productos y movimientos para ser consumidos por la librería PDFKit.
+
+- Permite cambiar la librería de generación de PDFs sin afectar el resto del sistema.
+
+- Reduce el acoplamiento entre lógica del sistema y librerías externas.
 
 ✔️ Observer — Sistema de Alertas
 
 Archivo: src/patterns/AlertService.ts
-   
-   * Observa cambios en el stock de productos.
-   
-   * Notifica automáticamente cuando un producto baja su nivel mínimo.
-   
-   * Permite implementar alertas.
+
+- Observa cambios en el stock de productos.
+
+- Notifica automáticamente cuando un producto baja su nivel mínimo.
+
+- Permite implementar alertas.
 
 ✔️ Facade — Interfaz Simplificada del Sistema
 
 Implementación distribuida en: controladores + servicios
 
-   * Unifica operaciones complejas del sistema bajo interfaces simples.
-   
-   * El usuario final interactúa con métodos que encapsulan múltiples operaciones internas.
-   
-   * Reduce la complejidad para el cliente externo.
+- Unifica operaciones complejas del sistema bajo interfaces simples.
+
+- El usuario final interactúa con métodos que encapsulan múltiples operaciones internas.
+
+- Reduce la complejidad para el cliente externo.
 
 ✔️ Command — Pedidos y Registro Histórico
 
 Relación con: Order.ts, OrderService.ts
 
-   * Cada pedido puede interpretarse como un comando ejecutado en el sistema.
-   
-   * Permite registrar cambios en el stock de forma histórica.
-   
-   * Sienta las bases para implementar undo/redo en operaciones de stock.
-   
-   * Separa la acción (pedido) del ejecutor (servicio), lo que mejora el desacoplamiento.
-   
-| Patrón      | Archivo(s)                  | Propósito                                      |
-|-------------|------------------------------|------------------------------------------------|
-| Singleton   | `database.ts`               | Una única instancia de base de datos           |
-| Factory     | `ProductFactory.ts`         | Creación de productos según su tipo            |
-| Builder     | `ProductBuilder.ts`         | Construcción de objetos complejos              |
-| Decorator   | `ProductDecorator.ts`       | Añadir funciones sin modificar la clase base   |
-| Adapter     | `PDFAdapter.ts`             | Exportar reportes a PDF sin acoplar el sistema |
-| Observer    | `AlertService.ts`           | Sistema de alertas de stock                    |
-| Facade      | Servicios + Controladores   | Interfaz simplificada del sistema              |
-| Command     | Ordenes y movimientos de stock | Ejecutar acciones con registro histórico    |
+- Cada pedido puede interpretarse como un comando ejecutado en el sistema.
 
+- Permite registrar cambios en el stock de forma histórica.
+
+- Sienta las bases para implementar undo/redo en operaciones de stock.
+
+- Separa la acción (pedido) del ejecutor (servicio), lo que mejora el desacoplamiento.
+
+| Patrón    | Archivo(s)                     | Propósito                                      |
+| --------- | ------------------------------ | ---------------------------------------------- |
+| Singleton | `database.ts`                  | Una única instancia de base de datos           |
+| Factory   | `ProductFactory.ts`            | Creación de productos según su tipo            |
+| Builder   | `ProductBuilder.ts`            | Construcción de objetos complejos              |
+| Decorator | `ProductDecorator.ts`          | Añadir funciones sin modificar la clase base   |
+| Adapter   | `PDFAdapter.ts`                | Exportar reportes a PDF sin acoplar el sistema |
+| Observer  | `AlertService.ts`              | Sistema de alertas de stock                    |
+| Facade    | Servicios + Controladores      | Interfaz simplificada del sistema              |
+| Command   | Ordenes y movimientos de stock | Ejecutar acciones con registro histórico       |
 
 ### 🧪 Testing
 
 La carpeta src/tests contiene:
+
 ```plaintext
 ✔️ Tests unitarios de patrones
 
@@ -311,12 +319,13 @@ La carpeta src/tests contiene:
 ✔️ Mocking de base de datos
 ```
 
- * Ejecutar tests:
+- Ejecutar tests:
+
 ```ruby
    npm test
 ```
 
-* Validaciones
+- Validaciones
 
 Se utilizan middlewares y funciones de validación:
 
@@ -325,7 +334,8 @@ validation.ts
 utils/validators.ts
 
 Incluye validaciones de:
-``` plaintext
+
+```plaintext
 ✔️ Nombre
 ✔️ Precio
 ✔️ Stock
@@ -340,7 +350,6 @@ Esquema definido en:
 
 setup.sql
 src/dataBase/setup.sql
-
 
 Incluye tablas:
 
