@@ -401,9 +401,9 @@ La carpeta ``src/tests`` contiene:
 ```
 
 **Validaciones**
-   - Se utilizan middlewares y funciones de validación:
-   - validation.ts
-   - utils/validators.ts
+Se utilizan middlewares y funciones de validación:
+   - *middlewares/validation.ts* 
+   - *utils/validators.ts*
 
 **Incluye validaciones de**:
 
@@ -419,8 +419,7 @@ La carpeta ``src/tests`` contiene:
 ### 📊 Base de Datos
 
 **Esquema definido en**:
-- setup.sql
-- src/dataBase/setup.sql
+- *src/dataBase/setup.sql*
 
 - Incluye tablas:
    - products
