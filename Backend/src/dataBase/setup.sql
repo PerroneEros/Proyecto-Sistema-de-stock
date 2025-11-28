@@ -61,12 +61,12 @@ CREATE TABLE IF NOT EXISTS stock_movements (
 
 -- Productos de ejemplo
 INSERT INTO products (id, name, description, price, current_stock, min_stock, category, type) VALUES
-('prod_1', 'Laptop HP', 'Laptop empresarial i5 8GB RAM', 899.99, 15, 5, 'Tecnología', 'electronico'),
-('prod_2', 'Mouse Inalámbrico', 'Mouse ergonómico inalámbrico', 25.50, 8, 10, 'Accesorios', 'basico'),
-('prod_3', 'Leche Entera', 'Leche entera 1L', 2.99, 3, 15, 'Lácteos', 'perecedero'),
-('prod_4', 'Teclado Mecánico', 'Teclado mecánico RGB', 89.99, 20, 8, 'Accesorios', 'electronico'),
+('prod_1', 'Laptop HP', 'Laptop empresarial i5 8GB RAM', 899.99, 15, 5, 'Tecnologia', 'electronico'),
+('prod_2', 'Mouse Inalambrico', 'Mouse ergonomico inalambrico', 25.50, 8, 10, 'Accesorios', 'basico'),
+('prod_3', 'Leche Entera', 'Leche entera 1L', 2.99, 3, 15, 'Lacteos', 'perecedero'),
+('prod_4', 'Teclado Mecanico', 'Teclado mecanico RGB', 89.99, 20, 8, 'Accesorios', 'electronico'),
 ('prod_5', 'Yogurt Natural', 'Yogurt natural 500g', 1.99, 2, 20, 'Lácteos', 'perecedero'),
-('prod_6', 'Monitor 24"', 'Monitor LED 24 pulgadas Full HD', 199.99, 12, 6, 'Tecnología', 'electronico');
+('prod_6', 'Monitor 24"', 'Monitor LED 24 pulgadas Full HD', 199.99, 12, 6, 'Tecnologia', 'electronico');
 
 -- Pedidos de ejemplo
 INSERT INTO orders (id, product_id, quantity, status, user_id) VALUES
