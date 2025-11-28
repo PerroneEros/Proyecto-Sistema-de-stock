@@ -207,20 +207,32 @@ GET	/reports/alerts	Ver alertas (Observer)
 ✔️ Singleton — Conexión a la Base de Datos
 
 Archivo: src/config/database.ts
+Se utiliza para garantizar una única instancia de conexión a la base de datos durante toda la ejecución del backend.
+Multiples instancias generarían conexiones duplicadas, inestabilidad e inconsistencias.
 
-- Garantiza que exista una única instancia de conexión a la base de datos.
+✔ Cómo se aplica
+
+La clase mantiene un método getInstance() que devuelve siempre la misma conexión.
+
+✔ Problema que resuelve
 
 - Evita reconexiones innecesarias y mejora el rendimiento.
-
 - Asegura consistencia en todas las operaciones que requieren acceso al almacenamiento.
-
 - Permite un manejo centralizado de errores y reconexión.
+- Reduce consumo de recursos
+- Mantiene integridad y sincronización entre operaciones de stock y órdenes
 
 ✔️ Factory — Creación de Productos
 
 Archivo: src/patterns/ProductFactory.ts
+Permite crear productos de distintos tipos sin llenar el código de condicionales (if, switch).
+Es ideal para un sistema que puede crecer en variedad de productos.
 
-- Permite crear distintos tipos de productos según su categoría o tipo.
+✔ Cómo se aplica
+
+La factory recibe un DTO y devuelve la instancia correcta del modelo de producto.
+
+✔ Problema que resuelve
 
 - Evita lógica repetida en los controladores o servicios.
 
@@ -232,21 +244,40 @@ Archivo: src/patterns/ProductFactory.ts
 
 Archivo: src/patterns/ProductBuilder.ts
 
-- Facilita la creación de productos con múltiples atributos opcionales.
+Los productos tienen múltiples atributos obligatorios y opcionales.
+El patrón permite construirlos paso a paso y con validaciones.
+
+✔ Cómo se aplica
+
+Cada método del builder establece una propiedad hasta ejecutar build().
+
+✔ Problema que resuelve
 
 - Implementa un flujo de construcción más legible y flexible.
 
 - Permite transformar un DTO en un objeto de dominio de forma ordenada.
 
 - Útil para productos con propiedades variables o configurables.
+- Permite validaciones centralizadas
+- Simplifica extensiones futuras
 
 ✔️ Decorator — Extensión Dinámica de Funcionalidades
 
 Archivo: src/patterns/ProductDecorator.ts
 
-- Permite añadir funcionalidades sin modificar la clase base del producto.
+Permite agregar funcionalidades adicionales a un producto (precio final, descuentos, etiquetas, etc.) sin modificar su clase base.
 
-- Útil para aplicar recargos, descuentos, etiquetas o precios finales.
+✔ Cómo se aplica
+
+Un producto puede envolverse con un decorador que agrega comportamiento dinámico.
+
+✔ Problema que resuelve
+
+- Evita crear múltiples subclases
+
+- Permite añadir lógica extra sin romper el modelo original
+
+- Facilita personalización dinámica
 
 - Define comportamientos adicionales de manera flexible y desacoplada.
 
@@ -255,28 +286,104 @@ Archivo: src/patterns/ProductDecorator.ts
 ✔️ Adapter — Exportación de Datos a PDF
 
 Archivo: src/patterns/PDFAdapter.ts
+La generación de PDF depende de librerías externas (PDFKit).
+El adapter permite desacoplar el sistema de dicha librería.
 
-- Adapta los datos internos de productos y movimientos para ser consumidos por la librería PDFKit.
+✔ Cómo se aplica
 
-- Permite cambiar la librería de generación de PDFs sin afectar el resto del sistema.
+Convierte productos, órdenes y movimientos en el formato apto para PDFKit.
 
+✔ Problema que resuelve
+
+- Permite cambiar de proveedor de PDFs fácilmente
+
+- Centraliza la conversión
 - Reduce el acoplamiento entre lógica del sistema y librerías externas.
 
 ✔️ Observer — Sistema de Alertas
 
 Archivo: src/patterns/AlertService.ts
+El sistema necesita disparar alertas cuando un producto está por debajo del stock mínimo.
 
-- Observa cambios en el stock de productos.
+✔ Cómo se aplica
 
-- Notifica automáticamente cuando un producto baja su nivel mínimo.
+El AlertService actúa como sujeto, notificando a observadores registrados cuando cambia el stock.
 
-- Permite implementar alertas.
+✔ Problema que resuelve
+
+- Desacopla la lógica de alertas del resto del sistema
+
+- Facilita añadir nuevos tipos de alertas sin modificar código existente
+
+- Permite futuras integraciones (emails, paneles, bots, etc.)
 
 ✔️ Facade — Interfaz Simplificada del Sistema
 
 Implementación distribuida en: controladores + servicios
 
-- Unifica operaciones complejas del sistema bajo interfaces simples.
+Los controladores y servicios actúan como un Fachada porque unifican procesos internos que combinan:
+Validación
+
+- Acceso a la base de datos
+
+- Construcción del producto vía Builder
+
+- Creación vía Factory
+
+- Extensión vía Decorator
+
+- Notificaciones vía Observer
+
+- Exportación vía Adapter
+
+✔ ¿Qué operaciones unifica concretamente?
+▶ POST /products
+
+Unifica:
+
+- Validaciones
+
+- Construcción (Builder)
+
+- Creación (Factory)
+
+- Persistencia
+
+- Verificación de stock
+
+- Envío de alertas
+
+▶ POST /orders
+
+Unifica:
+
+- Validación
+
+- Descuento de stock
+
+- Registro del movimiento
+
+- Notificaciones si hay bajo stock
+
+▶ GET /reports/pdf
+
+Unifica:
+
+- Acceso a datos
+
+- Preparación del reporte
+
+- Adaptación a PDF
+
+- Generación del archivo final
+
+✔ Problema que resuelve
+
+- Simplifica la API
+
+- Evita exponer procesos internos complejos
+
+- Permite reorganizar la arquitectura sin afectar las rutas
 
 - El usuario final interactúa con métodos que encapsulan múltiples operaciones internas.
 
@@ -285,14 +392,31 @@ Implementación distribuida en: controladores + servicios
 ✔️ Command — Pedidos y Registro Histórico
 
 Relación con: Order.ts, OrderService.ts
+Cada operación de stock puede interpretarse como un comando:
 
-- Cada pedido puede interpretarse como un comando ejecutado en el sistema.
+- Descontar stock
 
-- Permite registrar cambios en el stock de forma histórica.
+- Registrar movimientos
 
-- Sienta las bases para implementar undo/redo en operaciones de stock.
+- Crear órdenes
+
+- Guardar histórico
+
+Esto permitiría en el futuro implementar funcionalidades como undo/redo.
+
+✔ Problema que resuelve
+
+- Mejora trazabilidad
+
+- Organiza cambios de estado
+
+- Deja registro histórico ordenado
 
 - Separa la acción (pedido) del ejecutor (servicio), lo que mejora el desacoplamiento.
+
+## Conclusion final
+
+Cada patrón cumple un rol clave en la arquitectura:
 
 | Patrón    | Archivo(s)                     | Propósito                                      |
 | --------- | ------------------------------ | ---------------------------------------------- |
