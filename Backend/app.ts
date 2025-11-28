@@ -1,17 +1,17 @@
 import express from "express";
 import cors from "cors";
-import routes from "./routes";
-import { DatabaseConfig } from "./config/database";
+import routes from "./src/routes";
+import { DatabaseConfig } from "./src/config/database";
 import {
   AlertService,
   EmailNotifier,
   ConsoleNotifier,
-} from "./patterns/AlertService";
-import {
-  validateProduct,
-  validateOrder,
-  validateDateRange,
-} from "./middleware/validation";
+} from "./src/patterns/AlertService";
+// import {
+//   validateProduct,
+//   validateOrder,
+//   validateDateRange,
+// } from "./src/middleware/validation";
 import swaggerUi from "swagger-ui-express";
 import specs from "./swagger";
 
