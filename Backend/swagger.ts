@@ -41,9 +41,9 @@ Para validar los distintos escenarios, utilice los **Ejemplos** pre-cargados en 
             currentStock: { type: "integer" },
             minStock: { type: "integer" },
             category: { type: "string" },
-            type: { 
-              type: "string", 
-              enum: ["basico", "perecedero", "electronico"] 
+            type: {
+              type: "string",
+              enum: ["basico", "perecedero", "electronico"],
             },
             createdAt: { type: "string", format: "date-time" },
             updatedAt: { type: "string", format: "date-time" },
@@ -66,9 +66,9 @@ Para validar los distintos escenarios, utilice los **Ejemplos** pre-cargados en 
             currentStock: { type: "integer" },
             minStock: { type: "integer" },
             category: { type: "string" },
-            type: { 
-              type: "string", 
-              enum: ["basico", "perecedero", "electronico"] 
+            type: {
+              type: "string",
+              enum: ["basico", "perecedero", "electronico"],
             },
           },
         },
@@ -134,8 +134,8 @@ Para validar los distintos escenarios, utilice los **Ejemplos** pre-cargados en 
                       currentStock: 20,
                       minStock: 5,
                       category: "Periféricos",
-                      type: "electronico"
-                    }
+                      type: "electronico",
+                    },
                   },
                   CasoErrorNegativo: {
                     summary: "❌ Caso Error: Precio Negativo (400)",
@@ -146,8 +146,8 @@ Para validar los distintos escenarios, utilice los **Ejemplos** pre-cargados en 
                       currentStock: 10,
                       minStock: 2,
                       category: "Test",
-                      type: "basico"
-                    }
+                      type: "basico",
+                    },
                   },
                   CasoErrorFaltanDatos: {
                     summary: "❌ Caso Error: Falta Nombre (400)",
@@ -157,10 +157,10 @@ Para validar los distintos escenarios, utilice los **Ejemplos** pre-cargados en 
                       currentStock: 10,
                       minStock: 2,
                       category: "Test",
-                      type: "basico"
-                    }
+                      type: "basico",
+                    },
                   },
-                  CasoErrorStockNegativo:{
+                  CasoErrorStockNegativo: {
                     summary: "❌ Caso Error: Stock Negativo (400)",
                     value: {
                       name: "Producto Sin Stock",
@@ -169,10 +169,10 @@ Para validar los distintos escenarios, utilice los **Ejemplos** pre-cargados en 
                       currentStock: -5,
                       minStock: 2,
                       category: "Test",
-                      type: "basico"
-                    }
-                  }
-                }                  
+                      type: "basico",
+                    },
+                  },
+                },
               },
             },
           },
@@ -193,7 +193,7 @@ Para validar los distintos escenarios, utilice los **Ejemplos** pre-cargados en 
               required: true,
               schema: { type: "string" },
               description: "ID del producto",
-              example: "prod_1"
+              example: "prod_1",
             },
           ],
           responses: {
@@ -219,7 +219,7 @@ Para validar los distintos escenarios, utilice los **Ejemplos** pre-cargados en 
               in: "path",
               required: true,
               schema: { type: "string" },
-              example: "prod_1"
+              example: "prod_1",
             },
           ],
           requestBody: {
@@ -233,13 +233,13 @@ Para validar los distintos escenarios, utilice los **Ejemplos** pre-cargados en 
                 examples: {
                   ActualizarBien: {
                     summary: "✅ Actualizar Stock (200)",
-                    value: { stock: 100 }
+                    value: { stock: 100 },
                   },
                   ActualizarMal: {
                     summary: "❌ Stock Negativo (400)",
-                    value: { stock: -50 }
-                  }
-                }
+                    value: { stock: -50 },
+                  },
+                },
               },
             },
           },
@@ -282,34 +282,34 @@ Para validar los distintos escenarios, utilice los **Ejemplos** pre-cargados en 
                     value: {
                       productId: "prod_1",
                       quantity: 1,
-                      userId: "cliente_feliz"
-                    }
+                      userId: "cliente_feliz",
+                    },
                   },
                   SinStock: {
                     summary: "❌ Error: Stock Insuficiente (400)",
                     value: {
                       productId: "prod_1",
                       quantity: 9999,
-                      userId: "cliente_ambicioso"
-                    }
+                      userId: "cliente_ambicioso",
+                    },
                   },
                   ProductoFantasma: {
                     summary: "❌ Error: Producto No Existe (404)",
                     value: {
                       productId: "id_inventado_xyz",
                       quantity: 1,
-                      userId: "cliente_confundido"
-                    }
+                      userId: "cliente_confundido",
+                    },
                   },
                   CantidadNegativa: {
                     summary: "❌ Error: Cantidad Negativa (400)",
                     value: {
                       productId: "prod_1",
                       quantity: -5,
-                      userId: "hacker_triste"
-                    }
-                  }
-                }
+                      userId: "hacker_triste",
+                    },
+                  },
+                },
               },
             },
           },
@@ -322,7 +322,10 @@ Para validar los distintos escenarios, utilice los **Ejemplos** pre-cargados en 
                 },
               },
             },
-            "400": { description: "Error de validación (cantidad negativa, stock insuficiente)" },
+            "400": {
+              description:
+                "Error de validación (cantidad negativa, stock insuficiente)",
+            },
             "404": { description: "Producto no encontrado" },
           },
         },
@@ -337,7 +340,7 @@ Para validar los distintos escenarios, utilice los **Ejemplos** pre-cargados en 
               in: "path",
               required: true,
               schema: { type: "string" },
-              example: "ID_DEL_PEDIDO_AQUI"
+              example: "order_1",
             },
           ],
           requestBody: {
@@ -356,17 +359,17 @@ Para validar los distintos escenarios, utilice los **Ejemplos** pre-cargados en 
                 examples: {
                   Completar: {
                     summary: "✅ Marcar Completado (200)",
-                    value: { status: "completado" }
+                    value: { status: "completado" },
                   },
                   Cancelar: {
                     summary: "✅ Cancelar Pedido (200)",
-                    value: { status: "cancelado" }
+                    value: { status: "cancelado" },
                   },
                   EstadoInvalido: {
                     summary: "❌ Estado Inexistente (400)",
-                    value: { status: "entregado_por_drone" }
-                  }
-                }
+                    value: { status: "entregado_por_drone" },
+                  },
+                },
               },
             },
           },
@@ -387,7 +390,7 @@ Para validar los distintos escenarios, utilice los **Ejemplos** pre-cargados en 
               in: "path",
               required: true,
               schema: { type: "string" },
-              example: "prod_1"
+              example: "prod_1",
             },
           ],
           responses: {
@@ -443,7 +446,7 @@ Para validar los distintos escenarios, utilice los **Ejemplos** pre-cargados en 
               required: false,
               schema: { type: "string", format: "date" },
               description: "Fecha inicio (YYYY-MM-DD)",
-              example: new Date().toISOString().split('T')[0]
+              example: new Date().toISOString().split("T")[0],
             },
             {
               name: "endDate",
@@ -451,7 +454,7 @@ Para validar los distintos escenarios, utilice los **Ejemplos** pre-cargados en 
               required: false,
               schema: { type: "string", format: "date" },
               description: "Fecha fin (YYYY-MM-DD)",
-              example: new Date().toISOString().split('T')[0]
+              example: new Date().toISOString().split("T")[0],
             },
           ],
           responses: {
@@ -459,7 +462,9 @@ Para validar los distintos escenarios, utilice los **Ejemplos** pre-cargados en 
               description: "PDF (base64) generado exitosamente",
               content: { "application/pdf": {} },
             },
-            "400": { description: "Fechas inválidas, futuras o rango incorrecto" },
+            "400": {
+              description: "Fechas inválidas, futuras o rango incorrecto",
+            },
             "404": { description: "No se encontraron ventas en ese rango" },
           },
         },
