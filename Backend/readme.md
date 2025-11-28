@@ -401,6 +401,7 @@ La carpeta ``src/tests`` contiene:
 ```
 
 **Validaciones**
+
 Se utilizan middlewares y funciones de validación:
    - *middlewares/validation.ts* 
    - *utils/validators.ts*
