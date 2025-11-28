@@ -1,14 +1,13 @@
 # 📦 Sistema de Gestión de Stock — Backend
 
-Backend del proyecto — API REST en Node.js + TypeScript + MySQL + Patrones de Diseño
+Backend del proyecto — API REST en ``Node.js`` + ``TypeScript`` + ``MySQL`` + ``Patrones de Diseño``
 
 ## Descripción General
 
 Este proyecto implementa el backend de un Sistema de Gestión de Stock, desarrollado con Node.js, TypeScript, Express, MySQL y una arquitectura modular basada en patrones de diseño de software.
+- El sistema permite administrar productos, registrar órdenes, manejar movimientos de stock, generar reportes PDF y activar alertas personalizadas.
 
-El sistema permite administrar productos, registrar órdenes, manejar movimientos de stock, generar reportes PDF y activar alertas personalizadas.
-
-Incluye:
+**INCLUYE**:
 
 ```plaintext
 ✅ API REST documentada con Swagger
@@ -18,35 +17,23 @@ Incluye:
 ✅ Implementación de patrones como:
 
    - Factory
-
    - Builder
-
    - Decorator
-
    - Adapter
-
    - Observer
 ```
 
 ### Tecnologías Utilizadas
 
-- Node.js 18+
-
-- TypeScript
-
-- Express
-
-- MySQL
-
-- Jest (tests)
-
-- Docker & Docker Compose
-
-- Swagger (documentación de API)
-
-- PDFKit (vía adaptador)
-
-- Patrones de diseño de software
+- **Node.js** *18+*
+- **TypeScript**
+- **Express**
+- **MySQL**
+- **Jest** (*tests*)
+- **Docker** & **Docker Compose**
+- **Swagger** (*documentación de API*)
+- **PDFKit** (*vía adaptador*)
+- **Patrones de diseño** *de software*
 
 ### 🗂️ Estructura del Proyecto
 
@@ -122,15 +109,14 @@ Backend/
 ### 🚀 Instalación y Ejecución
 
 ```ruby
-1️⃣ Clonar el repositorio
+1️⃣ #Clonar el repositorio
 git clone https://github.com/PerroneEros/Proyecto-Sistema-de-stock.git
 cd Proyecto-Sistema-de-stock/Backend
 
-2️⃣ Instalar dependencias
+2️⃣ #Instalar dependencias
 npm install
 
-3️⃣ Configurar variables de entorno
-
+3️⃣ #Configurar variables de entorno
 Crear .env en la raíz:
 
 DB_HOST=localhost
@@ -140,29 +126,31 @@ DB_PASSWORD=admin12345.
 DB_NAME=faststoc_db
 PORT=3000
 
-4️⃣ Inicializar base de datos
+4️⃣ #Inicializar base de datos
 Opción A — Script SQL
 mysql -u root -p < setup.sql
 
 Opción B — Script TypeScript
 npm run db:init
 
-5️⃣ Ejecutar el servidor
-Modo producción
+
+5️⃣ #Ejecutar el servidor
+
+#Modo producción
 npm start
 
-Modo desarrollo
+#Modo desarrollo
 npm run dev
 ```
 
 ### 🐳 Ejecución con Docker
 
 ```ruby
-1. Construir e iniciar
-docker-compose up --build -d
+#Construir e iniciar
+1. docker-compose up --build -d
 
-2. Detener contenedores
-docker-compose down
+#Detener contenedores
+2. docker-compose down
 ```
 
 ### 📚 Documentación de la API (Swagger)
@@ -173,7 +161,7 @@ Una vez iniciado el proyecto:
 
 La documentación se genera desde el archivo:
 
-swagger.ts
+- ``swagger.ts``
 
 ## 📌 Endpoints principales
 
@@ -202,217 +190,182 @@ GET	/reports/pdf	Generar reporte PDF (Adapter)
 GET	/reports/alerts	Ver alertas (Observer)
 ```
 
-### Patrones de Diseño Implementados
+## Patrones de Diseño Implementados
+
+### 📍 Singleton — Conexión a la Base de Datos
+
+**Archivo**: ``src/config/database.ts``
+- Se utiliza para garantizar una única instancia de conexión a la base de datos durante toda la ejecución del backend.
+- Multiples instancias generarían conexiones duplicadas, inestabilidad e inconsistencias.
+
+   ✔ **Cómo se aplica**
+
+      - La clase mantiene un método getInstance() que devuelve siempre la misma conexión.
+
+   ✔ **Problema que resuelve**
+
+      - Evita reconexiones innecesarias y mejora el rendimiento.
+      - Asegura consistencia en todas las operaciones que requieren acceso al almacenamiento.
+      - Permite un manejo centralizado de errores y reconexión.
+      - Reduce consumo de recursos
+      - Mantiene integridad y sincronización entre operaciones de stock y órdenes
+
+### 📍 Factory — Creación de Productos
+
+**Archivo**: ``src/patterns/ProductFactory.ts``
+- Permite crear productos de distintos tipos sin llenar el código de condicionales (if, switch).
+- Es ideal para un sistema que puede crecer en variedad de productos.
+
+   ✔ **Cómo se aplica**
+   
+      - La factory recibe un DTO y devuelve la instancia correcta del modelo de producto.
+   
+   ✔ **Problema que resuelve**
+
+      - Evita lógica repetida en los controladores o servicios.
+      - Facilita la extensibilidad del sistema cuando se agreguen nuevos tipos de productos.
+      - Separa la lógica de creación de la lógica de negocio.
 
-✔️ Singleton — Conexión a la Base de Datos
+### 📍 Builder — Construcción de Productos Complejos
+
+**Archivo**: ``src/patterns/ProductBuilder.ts``
+
+- Los productos tienen múltiples atributos obligatorios y opcionales.
+- El patrón permite construirlos paso a paso y con validaciones.
+   
+   ✔ **Cómo se aplica**
+   
+      - Cada método del builder establece una propiedad hasta ejecutar build().
+   
+   ✔ **Problema que resuelve**
+   
+      - Implementa un flujo de construcción más legible y flexible.
+      - Permite transformar un DTO en un objeto de dominio de forma ordenada.
+      - Útil para productos con propiedades variables o configurables.
+      - Permite validaciones centralizadas
+      - Simplifica extensiones futuras
 
-Archivo: src/config/database.ts
-Se utiliza para garantizar una única instancia de conexión a la base de datos durante toda la ejecución del backend.
-Multiples instancias generarían conexiones duplicadas, inestabilidad e inconsistencias.
+### 📍 Decorator — Extensión Dinámica de Funcionalidades
 
-✔ Cómo se aplica
+**Archivo**: ``src/patterns/ProductDecorator.ts``
 
-La clase mantiene un método getInstance() que devuelve siempre la misma conexión.
+- Permite agregar funcionalidades adicionales a un producto (precio final, descuentos, etiquetas, etc.) sin modificar su clase base.
 
-✔ Problema que resuelve
+   ✔ **Cómo se aplica**
+   
+      - Un producto puede envolverse con un decorador que agrega comportamiento dinámico.
+   
+   ✔ **Problema que resuelve**
+   
+      - Evita crear múltiples subclases
+      - Permite añadir lógica extra sin romper el modelo original
+      - Facilita personalización dinámica
+      - Define comportamientos adicionales de manera flexible y desacoplada.
+      - Facilita la combinación de múltiples decoradores si fuera necesario.
 
-- Evita reconexiones innecesarias y mejora el rendimiento.
-- Asegura consistencia en todas las operaciones que requieren acceso al almacenamiento.
-- Permite un manejo centralizado de errores y reconexión.
-- Reduce consumo de recursos
-- Mantiene integridad y sincronización entre operaciones de stock y órdenes
+### 📍 Adapter — Exportación de Datos a PDF
 
-✔️ Factory — Creación de Productos
+**Archivo**: ``src/patterns/PDFAdapter.ts``
+- La generación de PDF depende de librerías externas (PDFKit).
+- El adapter permite desacoplar el sistema de dicha librería.
 
-Archivo: src/patterns/ProductFactory.ts
-Permite crear productos de distintos tipos sin llenar el código de condicionales (if, switch).
-Es ideal para un sistema que puede crecer en variedad de productos.
+   ✔ **Cómo se aplica**
+   
+      - Convierte productos, órdenes y movimientos en el formato apto para PDFKit.
+   
+   ✔ **Problema que resuelve**
+   
+      - Permite cambiar de proveedor de PDFs fácilmente
+      - Centraliza la conversión
+      - Reduce el acoplamiento entre lógica del sistema y librerías externas.
 
-✔ Cómo se aplica
+### 📍 Observer — Sistema de Alertas
 
-La factory recibe un DTO y devuelve la instancia correcta del modelo de producto.
+**Archivo**: ``src/patterns/AlertService.ts``
+- El sistema necesita disparar alertas cuando un producto está por debajo del stock mínimo.
 
-✔ Problema que resuelve
+   ✔ **Cómo se aplica**
+   
+      - El AlertService actúa como sujeto, notificando a observadores registrados cuando cambia el stock.
+   
+   ✔ **Problema que resuelve**
+   
+      - Desacopla la lógica de alertas del resto del sistema
+      - Facilita añadir nuevos tipos de alertas sin modificar código existente
+      - Permite futuras integraciones (emails, paneles, bots, etc.)
 
-- Evita lógica repetida en los controladores o servicios.
+### 📍 Facade — Interfaz Simplificada del Sistema
 
-- Facilita la extensibilidad del sistema cuando se agreguen nuevos tipos de productos.
+- Implementación distribuida en: ``controladores`` + ``servicios``
 
-- Separa la lógica de creación de la lógica de negocio.
+- Los controladores y servicios actúan como un Fachada porque unifican procesos internos que combinan:
 
-✔️ Builder — Construcción de Productos Complejos
+   - Validación
+   - Acceso a la base de datos
+   - Construcción del producto vía Builder
+   - Creación vía Factory
+   - Extensión vía Decorator
+   - Notificaciones vía Observer
+   - Exportación vía Adapter
 
-Archivo: src/patterns/ProductBuilder.ts
+✔ **¿Qué operaciones unifica concretamente?**
 
-Los productos tienen múltiples atributos obligatorios y opcionales.
-El patrón permite construirlos paso a paso y con validaciones.
+▶ *POST /products*
 
-✔ Cómo se aplica
+**Unifica**:
 
-Cada método del builder establece una propiedad hasta ejecutar build().
+      - Validaciones
+      - Construcción (Builder)
+      - Creación (Factory)
+      - Persistencia
+      - Verificación de stock
+      - Envío de alertas
 
-✔ Problema que resuelve
+▶ *POST /orders*
 
-- Implementa un flujo de construcción más legible y flexible.
+**Unifica**:
 
-- Permite transformar un DTO en un objeto de dominio de forma ordenada.
+      - Validación
+      - Descuento de stock
+      - Registro del movimiento
+      - Notificaciones si hay bajo stock
 
-- Útil para productos con propiedades variables o configurables.
-- Permite validaciones centralizadas
-- Simplifica extensiones futuras
+▶ *GET /reports/pdf*
 
-✔️ Decorator — Extensión Dinámica de Funcionalidades
+**Unifica**:
 
-Archivo: src/patterns/ProductDecorator.ts
+      - Acceso a datos
+      - Preparación del reporte
+      - Adaptación a PDF
+      - Generación del archivo final
 
-Permite agregar funcionalidades adicionales a un producto (precio final, descuentos, etiquetas, etc.) sin modificar su clase base.
+✔ **Problema que resuelve**
 
-✔ Cómo se aplica
+      - Simplifica la API
+      - Evita exponer procesos internos complejos
+      - Permite reorganizar la arquitectura sin afectar las rutas
+      - El usuario final interactúa con métodos que encapsulan múltiples operaciones internas.
+      - Reduce la complejidad para el cliente externo.
 
-Un producto puede envolverse con un decorador que agrega comportamiento dinámico.
+### 📍 Command — Pedidos y Registro Histórico
 
-✔ Problema que resuelve
+Relación con: ``Order.ts``, ``OrderService.ts``
 
-- Evita crear múltiples subclases
-
-- Permite añadir lógica extra sin romper el modelo original
-
-- Facilita personalización dinámica
-
-- Define comportamientos adicionales de manera flexible y desacoplada.
-
-- Facilita la combinación de múltiples decoradores si fuera necesario.
-
-✔️ Adapter — Exportación de Datos a PDF
-
-Archivo: src/patterns/PDFAdapter.ts
-La generación de PDF depende de librerías externas (PDFKit).
-El adapter permite desacoplar el sistema de dicha librería.
-
-✔ Cómo se aplica
-
-Convierte productos, órdenes y movimientos en el formato apto para PDFKit.
-
-✔ Problema que resuelve
-
-- Permite cambiar de proveedor de PDFs fácilmente
-
-- Centraliza la conversión
-- Reduce el acoplamiento entre lógica del sistema y librerías externas.
-
-✔️ Observer — Sistema de Alertas
-
-Archivo: src/patterns/AlertService.ts
-El sistema necesita disparar alertas cuando un producto está por debajo del stock mínimo.
-
-✔ Cómo se aplica
-
-El AlertService actúa como sujeto, notificando a observadores registrados cuando cambia el stock.
-
-✔ Problema que resuelve
-
-- Desacopla la lógica de alertas del resto del sistema
-
-- Facilita añadir nuevos tipos de alertas sin modificar código existente
-
-- Permite futuras integraciones (emails, paneles, bots, etc.)
-
-✔️ Facade — Interfaz Simplificada del Sistema
-
-Implementación distribuida en: controladores + servicios
-
-Los controladores y servicios actúan como un Fachada porque unifican procesos internos que combinan:
-Validación
-
-- Acceso a la base de datos
-
-- Construcción del producto vía Builder
-
-- Creación vía Factory
-
-- Extensión vía Decorator
-
-- Notificaciones vía Observer
-
-- Exportación vía Adapter
-
-✔ ¿Qué operaciones unifica concretamente?
-▶ POST /products
-
-Unifica:
-
-- Validaciones
-
-- Construcción (Builder)
-
-- Creación (Factory)
-
-- Persistencia
-
-- Verificación de stock
-
-- Envío de alertas
-
-▶ POST /orders
-
-Unifica:
-
-- Validación
-
-- Descuento de stock
-
-- Registro del movimiento
-
-- Notificaciones si hay bajo stock
-
-▶ GET /reports/pdf
-
-Unifica:
-
-- Acceso a datos
-
-- Preparación del reporte
-
-- Adaptación a PDF
-
-- Generación del archivo final
-
-✔ Problema que resuelve
-
-- Simplifica la API
-
-- Evita exponer procesos internos complejos
-
-- Permite reorganizar la arquitectura sin afectar las rutas
-
-- El usuario final interactúa con métodos que encapsulan múltiples operaciones internas.
-
-- Reduce la complejidad para el cliente externo.
-
-✔️ Command — Pedidos y Registro Histórico
-
-Relación con: Order.ts, OrderService.ts
 Cada operación de stock puede interpretarse como un comando:
 
-- Descontar stock
-
-- Registrar movimientos
-
-- Crear órdenes
-
-- Guardar histórico
+      - Descontar stock
+      - Registrar movimientos
+      - Crear órdenes
+      - Guardar histórico
 
 Esto permitiría en el futuro implementar funcionalidades como undo/redo.
 
-✔ Problema que resuelve
-
-- Mejora trazabilidad
-
-- Organiza cambios de estado
-
-- Deja registro histórico ordenado
-
-- Separa la acción (pedido) del ejecutor (servicio), lo que mejora el desacoplamiento.
+   ✔ **Problema que resuelve**
+   
+         - Mejora trazabilidad
+         - Organiza cambios de estado
+         - Deja registro histórico ordenado
+         - Separa la acción (pedido) del ejecutor (servicio), lo que mejora el desacoplamiento.
 
 ## Conclusion final
 
@@ -429,35 +382,30 @@ Cada patrón cumple un rol clave en la arquitectura:
 | Facade    | Servicios + Controladores      | Interfaz simplificada del sistema              |
 | Command   | Ordenes y movimientos de stock | Ejecutar acciones con registro histórico       |
 
+
 ### 🧪 Testing
 
-La carpeta src/tests contiene:
+La carpeta ``src/tests`` contiene:
 
 ```plaintext
 ✔️ Tests unitarios de patrones
-
 ✔️ Tests de servicios
-
 ✔️ Tests de integración producto–stock
-
 ✔️ Mocking de base de datos
 ```
 
-- Ejecutar tests:
+**Ejecutar tests**:
 
 ```ruby
    npm test
 ```
 
-- Validaciones
+**Validaciones**
+   - Se utilizan middlewares y funciones de validación:
+   - validation.ts
+   - utils/validators.ts
 
-Se utilizan middlewares y funciones de validación:
-
-validation.ts
-
-utils/validators.ts
-
-Incluye validaciones de:
+**Incluye validaciones de**:
 
 ```plaintext
 ✔️ Nombre
@@ -470,18 +418,14 @@ Incluye validaciones de:
 
 ### 📊 Base de Datos
 
-Esquema definido en:
+**Esquema definido en**:
+- setup.sql
+- src/dataBase/setup.sql
 
-setup.sql
-src/dataBase/setup.sql
+- Incluye tablas:
+   - products
+   - orders
+   - stock_movements
 
-Incluye tablas:
-
-products
-
-orders
-
-stock_movements
-
-👥 Integrantes:
+#### 👥 Integrantes:
 Eros Perrone - Franco Devaux - Bruno Fernandez - Ivo Depari
