@@ -10,7 +10,7 @@ const options = {
 ### Sistema de Gestión de Stock Inteligente
 
 Esta API permite administrar el inventario, procesar pedidos y generar reportes en PDF.
-El sistema implementa patrones de diseño clave como **Singleton**, **Factory**, **Command** y **Adapter**.
+El sistema implementa patrones de diseño claves.
 
 **Módulos del Sistema:**
 * 📦 **Productos:** Gestión de inventario con validaciones estrictas y control de stock.
