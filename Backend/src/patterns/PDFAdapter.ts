@@ -98,15 +98,15 @@ export class PDFAdapter implements ReportGenerator {
     });
   }
 
-// Reutiliza la lógica de stock filtrando solo los críticos
+  // Reutiliza la lógica de stock filtrando solo los críticos
   async generateLowStockReport(products: Product[]): Promise<Buffer> {
     const lowStockProducts = products.filter(
       (p) => p.currentStock <= p.minStock
     );
     return this.generateStockReport(lowStockProducts);
   }
-  
-// Genera reporte de ventas
+
+  // Genera reporte de ventas
   async generateSalesReport(
     orders: Order[],
     startDate?: string,
@@ -151,14 +151,14 @@ export class PDFAdapter implements ReportGenerator {
         );
 
         doc.fontSize(14).text("Resumen de Ventas:");
-        doc.moveDown(0.5); 
+        doc.moveDown(0.5);
         doc.fontSize(12);
         doc.text(`Total de pedidos: ${totalOrders}`);
         doc.text(`Pedidos completados: ${completadoOrders}`);
         doc.text(`Cantidad total vendida: ${totalQuantity} unidades`);
         doc.moveDown();
 
-        let yPosition = doc.y + 30; 
+        let yPosition = doc.y + 30;
 
         // Encabezados de tabla
         doc.fontSize(10);
@@ -180,10 +180,10 @@ export class PDFAdapter implements ReportGenerator {
           }
 
           const orderId = order.id ? order.id.toString() : "N/A";
-          const prodId = order.productId ? order.productId.toString() : "N/A";
+          const prodName = (order as any).productName || "Desconocido";
 
           doc.text(orderId.substring(0, 8), 50, yPosition);
-          doc.text(prodId.substring(0, 15), 150, yPosition);
+          doc.text(prodName.substring(0, 25), 150, yPosition);
           doc.text(order.quantity.toString(), 300, yPosition);
 
           const statusColor =
