@@ -51,72 +51,134 @@ Incluye:
 ### 🗂️ Estructura del Proyecto
 
 ```plaintext
-Backend/
-│   .dockerignore
-│   .env
-│   .gitignore
-│   app.ts
-│   docker-compose.yml
-│   dockerfile
-│   index.ts
-│   jest.config.cjs
-│   package-lock.json
-│   package.json
-│   readme.md
-│   swagger.ts
-│   tsconfig.json
-│
-├── setup.sql
-└── src
-    ├── config
-    │       database.ts
-    │
-    ├── controllers
-    │       OrderController.ts
-    │       ProductController.ts
-    │       ReportController.ts
-    │
-    ├── dataBase
-    │       setup.sql
-    │
-    ├── middleware
-    │       validation.ts
-    │
-    ├── models
-    │       Order.ts
-    │       Product.ts
-    │       StockMovement.ts
-    │
-    ├── patterns
-    │       AlertService.ts
-    │       PDFAdapter.ts
-    │       ProductBuilder.ts
-    │       ProductDecorator.ts
-    │       ProductFactory.ts
-    │
-    ├── routes
-    │       index.ts
-    │       orderRoutes.ts
-    │       productRoutes.ts
-    │       reportRoutes.ts
-    │
-    ├── scripts
-    │       init-db.ts
-    │
-    ├── services
-    │       OrderService.ts
-    │       ProductService.ts
-    │       ReportService.ts
-    │
-    ├── tests
-    │       alert.test.ts
-    │       product.builder.test.ts
-    │       product.decorator.test.ts
-    │       product.integration.test.ts
-    │       product.test.ts
-    │
-    └── utils
-            validators.ts
+C:.
+|   .dockerignore
+|   .env
+|   .eslintrc.json
+|   .gitignore
+|   .prettierrc
+|   dockerfile
+|   LICENCE
+|   package-lock.json
+|   package.json
+|   tsconfig.json
+|
++---src
+|   |   .sequelizerc
+|   |   app.ts
+|   |   server.ts
+|   |
+|   +---config
+|   |       config.js
+|   |
+|   +---controllers
+|   |       order.Controller.ts
+|   |       orderDetail.Controller.ts
+|   |       product.Controller.ts
+|   |       report.Controller.ts
+|   |       user.Controller.ts
+|   |
+|   +---database
+|   |       db.ts
+|   |       init.ts
+|   |
+|   +---middlewares
+|   |       auth.Middleware.ts
+|   |
+|   +---mock
+|   |       orderDetailMock.json
+|   |       orderMock.json
+|   |       productMock.json
+|   |       reportMock.json
+|   |       userMock.json
+|   |
+|   +---models
+|   |   |   associations.ts
+|   |   |   order.ts
+|   |   |   orderDetail.ts
+|   |   |   product.ts
+|   |   |   report.ts
+|   |   |   user.ts
+|   |   |   
+|   |   \---Interface
+|   |           orderAttributes.ts
+|   |           orderDetailAttributes.ts
+|   |           productAttributes.ts
+|   |           reportAttributes.ts
+|   |           userAttributes.ts
+|   |
+|   +---public
+|   |   \---product_icons
+|   |           1.jpeg
+|   |           10.jpeg
+|   |           11.jpeg
+|   |           12.jpeg
+|   |           13.jpeg
+|   |           14.jpeg
+|   |           15.jpeg
+|   |           2.jpeg
+|   |           3.jpeg
+|   |           4.jpeg
+|   |           5.jpeg
+|   |           6.jpeg
+|   |           7.jpeg
+|   |           8.jpeg
+|   |           9.jpeg
+|   |
+|   +---routes
+|   |       order.Routes.ts
+|   |       orderDetail.Routes.ts
+|   |       product.Routes.ts
+|   |       report.Routes.ts
+|   |       user.Routes.ts
+|   |
+|   +---seeders
+|   |       seeder.ts
+|   |
+|   +---services
+|   |       order.Service.ts
+|   |       orderDetail.Service.ts
+|   |       product.Service.ts
+|   |       report.Service.ts
+|   |       user.Service.ts
+|   |
+|   \---utils
+|           cloudinary.ts
+|
++---test
+|   |   root.test.ts
+|   |
+|   +---prueba de integracion mock
+|   |       detallePedido.integration.test.ts
+|   |       pedido.integration.test.ts
+|   |       product.integration.test.ts
+|   |       reporte.integration.test.ts
+|   |       user.integration.test.ts
+|   |
+|   +---routes
+|   |   +---pedido
+|   |   |       pedido.routes.test.ts
+|   |   |
+|   |   +---product
+|   |   |       product.routes.test.ts
+|   |   |       
+|   |   +---reportes
+|   |   |       reportes.routes.test.ts
+|   |   |
+|   |   \---user
+|   |           user.routes.test.ts
+|   |
+|   +---services
+|   |       detallePedido.service.test.ts
+|   |       pedido.service.test.ts
+|   |       product.service.test.ts
+|   |       reporte.service.test.ts
+|   |       user.service.test.ts
+|   |
+|   \---utils
+|           request.ts
+|
+\---uploads
 ```
 
 ### 🚀 Instalación y Ejecución
